@@ -93,3 +93,16 @@ def test_choose_color_valid_color(drawing_app):
         drawing_app.choose_color()
 
         assert drawing_app.canvas.color == "#FF0000"
+
+
+def test_canvas_set_brush_size():
+    root = tk.Tk()
+    canvas = Canvas(root)
+
+    # Set the brush size to 10
+    canvas.set_brush_size(10)
+    assert canvas.brush_size == 10
+
+    # Set the brush size to 5
+    canvas.set_brush_size(5)
+    assert canvas.brush_size == 5
