@@ -2,13 +2,6 @@ import pytest
 import tkinter as tk
 from pypaint import DrawingApp, Canvas, BrushButton, EraserButton
 from unittest.mock import patch
-from pyvirtualdisplay import Display
-
-
-@pytest.fixture(scope="session")
-def virtual_display():
-    with Display(visible=0, size=(800, 600), backend="xvfb") as disp:
-        yield disp
 
 
 def test_canvas_initial_color():
@@ -46,7 +39,7 @@ def mock_colorchooser():
 
 
 @pytest.fixture
-def drawing_app(request, virtual_display):
+def drawing_app(request):
     root = tk.Tk()
     app = DrawingApp(root)
     yield app
