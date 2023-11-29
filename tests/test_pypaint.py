@@ -1,6 +1,6 @@
 import pytest
 import tkinter as tk
-from pypaint import DrawingApp, Canvas, BrushButton, EraserButton
+from pypaint import DrawingApp, Canvas, EraserButton
 from unittest.mock import patch
 
 
@@ -59,18 +59,6 @@ def test_canvas_toggle_brush_mode(drawing_app):
 
     canvas.toggle_brush_mode()
     assert not canvas.eraser_mode
-
-
-def test_brush_button_toggle_brush_mode(drawing_app):
-    brush_button = BrushButton(drawing_app.root, drawing_app.canvas)
-
-    assert not drawing_app.canvas.eraser_mode
-    assert brush_button.cget("bg") == brush_button.unselected_color
-
-    brush_button.toggle_brush_mode()
-
-    assert not drawing_app.canvas.eraser_mode
-    assert brush_button.cget("bg") == brush_button.selected_color
 
 
 def test_eraser_button_toggle_eraser_mode(drawing_app):
