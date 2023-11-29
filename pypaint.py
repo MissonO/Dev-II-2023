@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import colorchooser, simpledialog
+import random
 
 
 class Brush:
@@ -31,6 +32,23 @@ class PencilBrush(Brush):
         )
 
 
+class SprayBrush(Brush):
+    def draw(self, x, y):
+        density = 5
+        for _ in range(density):
+            spray_x = x + random.uniform(-self.size, self.size)
+            spray_y = y + random.uniform(-self.size, self.size)
+            self.set_color(self.canvas.color)
+            self.canvas.create_oval(
+                spray_x - 1,
+                spray_y - 1,
+                spray_x + 1,
+                spray_y + 1,
+                fill=self.color,
+                outline=self.color
+            )
+
+
 class EraserBrush(Brush):
     def draw(self, x, y):
         self.canvas.create_oval(
@@ -51,6 +69,7 @@ class Canvas(tk.Canvas):
         self.color = "black"
         self.eraser_mode = False
         self.brush_size = 2
+        self.current_brush = PencilBrush(self, size=self.brush_size)
 
     # Definit la fonction de dessin
     def draw(self, event):
@@ -59,11 +78,19 @@ class Canvas(tk.Canvas):
         x, y = event.x, event.y
 
         if self.eraser_mode:
-            self.brush = EraserBrush(self, size=self.brush_size)
-        else:
-            self.brush = PencilBrush(self, size=self.brush_size)
+            self.current_brush = EraserBrush(self, size=self.brush_size)
+        elif isinstance(
+            self.current_brush,
+            PencilBrush
+        ) and not self.eraser_mode:
+            self.current_brush = PencilBrush(self, size=self.brush_size)
+        elif isinstance(
+            self.current_brush,
+            SprayBrush
+        ) and not self.eraser_mode:
+            self.current_brush = SprayBrush(self, size=self.brush_size)
 
-        self.brush.draw(x, y)
+        self.current_brush.draw(x, y)
 
     def set_color(self, color):
         self.color = color
@@ -73,9 +100,14 @@ class Canvas(tk.Canvas):
 
     def toggle_brush_mode(self):
         self.eraser_mode = False
+        self.current_brush = PencilBrush(self, size=self.brush_size)
 
     def set_brush_size(self, size):
         self.brush_size = size
+
+    def toggle_spray_mode(self):
+        self.eraser_mode = False
+        self.current_brush = SprayBrush(self, size=self.brush_size)
 
     def update_brush_size_label(self):
         brush_size_label.config(text=f"Brush Size: {self.brush_size}")
@@ -123,6 +155,20 @@ class SizeButton(tk.Button):
             self.canvas.update_brush_size_label()
 
 
+class SprayButton(tk.Button):
+    def __init__(self, master, canvas, **kwargs):
+        super().__init__(
+            master,
+            text="Spray",
+            command=self.toggle_spray_mode,
+            **kwargs
+        )
+        self.canvas = canvas
+
+    def toggle_spray_mode(self):
+        self.canvas.toggle_spray_mode()
+
+
 class DrawingApp:
     def __init__(self, root):
         self.root = root
@@ -141,6 +187,8 @@ class DrawingApp:
 
         eraser_button = EraserButton(root, self.canvas)
         eraser_button.pack(side=tk.LEFT)
+        spray_button = SprayButton(root, self.canvas)
+        spray_button.pack(side=tk.LEFT)
         size_button = SizeButton(root, self.canvas)
         size_button.pack(side=tk.LEFT)
         global brush_size_label
