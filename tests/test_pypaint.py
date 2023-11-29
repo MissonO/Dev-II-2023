@@ -105,7 +105,3 @@ def test_choose_color_valid_color(drawing_app):
         drawing_app.choose_color()
 
         assert drawing_app.canvas.color == "#FF0000"
-
-
-if __name__ == "__main__":
-    pytest.main()
