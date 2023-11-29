@@ -1,6 +1,6 @@
 import pytest
 import tkinter as tk
-from pypaint import Canvas, DrawingApp
+from pypaint import DrawingApp, Canvas, BrushButton, EraserButton
 from unittest.mock import patch
 
 
@@ -51,21 +51,57 @@ def test_drawing_app_initialization(drawing_app):
     assert isinstance(drawing_app.canvas, Canvas)
 
 
-def test_choose_color_with_color_selection(drawing_app, mock_colorchooser):
-    mock_colorchooser.return_value = (None, "#FF0000")
+def test_canvas_toggle_brush_mode(drawing_app):
+    canvas = drawing_app.canvas
 
-    drawing_app.choose_color()
+    canvas.toggle_eraser_mode()
+    assert canvas.eraser_mode
 
-    assert drawing_app.canvas.color == "#FF0000"
-    assert drawing_app.canvas.set_color.call_count == 1
-    drawing_app.canvas.set_color.assert_called_with("#FF0000")
+    canvas.toggle_brush_mode()
+    assert not canvas.eraser_mode
 
 
-def test_choose_color_with_cancel(drawing_app, mock_colorchooser):
-    mock_colorchooser.return_value = (None, None)  # Simulate cancel
-    initial_color = drawing_app.canvas.color
+def test_brush_button_toggle_brush_mode(drawing_app):
+    brush_button = BrushButton(drawing_app.root, drawing_app.canvas)
 
-    drawing_app.choose_color()
+    assert not drawing_app.canvas.eraser_mode
+    assert brush_button.cget("bg") == brush_button.unselected_color
 
-    assert drawing_app.canvas.color == initial_color
-    assert drawing_app.canvas.set_color.call_count == 0
+    brush_button.toggle_brush_mode()
+
+    assert not drawing_app.canvas.eraser_mode
+    assert brush_button.cget("bg") == brush_button.selected_color
+
+
+def test_eraser_button_toggle_eraser_mode(drawing_app):
+    eraser_button = EraserButton(drawing_app.root, drawing_app.canvas)
+
+    assert not drawing_app.canvas.eraser_mode
+    assert eraser_button.cget("bg") == eraser_button.unselected_color
+
+    eraser_button.toggle_eraser_mode()
+
+    assert drawing_app.canvas.eraser_mode
+    assert eraser_button.cget("bg") == eraser_button.selected_color
+
+
+def test_choose_color_cancel(drawing_app):
+    with patch('tkinter.colorchooser.askcolor', return_value=(None, None)):
+        initial_color = drawing_app.canvas.color
+
+        drawing_app.choose_color()
+
+        assert drawing_app.canvas.color == initial_color
+
+
+def test_choose_color_valid_color(drawing_app):
+    with patch(
+        'tkinter.colorchooser.askcolor',
+        return_value=((255, 0, 0),
+                      "#FF0000"
+                      )
+                ):
+
+        drawing_app.choose_color()
+
+        assert drawing_app.canvas.color == "#FF0000"
