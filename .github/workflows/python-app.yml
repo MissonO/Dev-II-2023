@@ -35,11 +35,12 @@ jobs:
   
     - name: Run flake8
       run: |
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+        & "${env:pythonLocation}\Scripts\flake8" . --count --select=E9,F63,F7,F82 --show-source --statistics
+        & "${env:pythonLocation}\Scripts\flake8" . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      shell: pwsh
       env:
-        pythonLocation: C:\hostedtoolcache\windows\Python\3.10.11\x64
+        pythonLocation: 'C:\hostedtoolcache\windows\Python\3.10.11\x64'
+  
   
     - name: Test with pytest
       run: |
