@@ -9,10 +9,10 @@ class Brush:
 
     def draw(self, x, y):
         raise NotImplementedError()
-    
+
     def set_color(self, color):
         self.color = color
-   
+
 
 class PencilBrush(Brush):
     def draw(self, x, y):
