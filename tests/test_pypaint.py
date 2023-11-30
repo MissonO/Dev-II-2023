@@ -1,6 +1,8 @@
 import pytest
 import tkinter as tk
-from pypaint import DrawingApp, Canvas, EraserButton
+from drawing_app import DrawingApp
+from canvas import Canvas
+from buttons import EraserButton
 from unittest.mock import patch
 
 
