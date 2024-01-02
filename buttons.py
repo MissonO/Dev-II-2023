@@ -20,6 +20,7 @@ class EraserButton(tk.Button):
         if self.canvas.eraser_mode:
             self.configure(bg=self.selected_color)
         else:
+            self.canvas.toggle_brush_mode()
             self.configure(bg=self.unselected_color)
 
 
