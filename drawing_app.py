@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import colorchooser, messagebox, simpledialog
+from tkinter import colorchooser
 from canvas import Canvas
 from buttons import EraserButton, SizeButton, SprayButton
 

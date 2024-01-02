@@ -15,24 +15,31 @@ class Canvas(tk.Canvas):
 
     # Definit la fonction de dessin
     def draw(self, event):
+        try:
 
-        # Récupère les coordonnées de la souris
-        x, y = event.x, event.y
+            # Récupère les coordonnées de la souris
+            x, y = event.x, event.y
 
-        if self.eraser_mode:
-            self.current_brush = EraserBrush(self, size=self.brush_size)
-        elif isinstance(
-            self.current_brush,
-            PencilBrush
-        ) and not self.eraser_mode:
-            self.current_brush = PencilBrush(self, size=self.brush_size)
-        elif isinstance(
-            self.current_brush,
-            SprayBrush
-        ) and not self.eraser_mode:
-            self.current_brush = SprayBrush(self, size=self.brush_size)
+            if self.eraser_mode:
+                self.current_brush = EraserBrush(self, size=self.brush_size)
+            elif isinstance(
+                self.current_brush,
+                PencilBrush
+            ) and not self.eraser_mode:
+                self.current_brush = PencilBrush(self, size=self.brush_size)
+            elif isinstance(
+                self.current_brush,
+                SprayBrush
+            ) and not self.eraser_mode:
+                self.current_brush = SprayBrush(self, size=self.brush_size)
 
-        self.current_brush.draw(x, y)
+            self.current_brush._draw(x, y)
+
+        except Exception as e:
+            tk.messagebox.showerror(  # type: ignore
+                "Error",
+                f"An error occurred: {str(e)}"
+            )
 
     def set_color(self, color):
         self.color = color

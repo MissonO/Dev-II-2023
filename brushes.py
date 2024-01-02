@@ -7,7 +7,7 @@ class Brush:
         self.color = color
         self.size = size
 
-    def draw(self, x, y):
+    def _draw(self, x, y):
         raise NotImplementedError()
 
     def set_color(self, color):
@@ -18,7 +18,7 @@ class Brush:
 
 
 class PencilBrush(Brush):
-    def draw(self, x, y):
+    def _draw(self, x, y):
         self.set_color(self.canvas.color)
         self.canvas.create_oval(
             x - self.size,
@@ -31,7 +31,7 @@ class PencilBrush(Brush):
 
 
 class SprayBrush(Brush):
-    def draw(self, x, y):
+    def _draw(self, x, y):
         density = 5
         for _ in range(density):
             spray_x = x + random.uniform(-self.size, self.size)
@@ -48,7 +48,7 @@ class SprayBrush(Brush):
 
 
 class EraserBrush(Brush):
-    def draw(self, x, y):
+    def _draw(self, x, y):
         self.canvas.create_oval(
             x - self.size,
             y - self.size,

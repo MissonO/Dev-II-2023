@@ -16,12 +16,18 @@ class EraserButton(tk.Button):
         self.configure(bg=self.unselected_color)
 
     def toggle_eraser_mode(self):
-        self.canvas.toggle_eraser_mode()
-        if self.canvas.eraser_mode:
-            self.configure(bg=self.selected_color)
-        else:
-            self.canvas.toggle_brush_mode()
-            self.configure(bg=self.unselected_color)
+        try:
+            self.canvas.toggle_eraser_mode()
+            if self.canvas.eraser_mode:
+                self.configure(bg=self.selected_color)
+            else:
+                self.canvas.toggle_brush_mode()
+                self.configure(bg=self.unselected_color)
+        except Exception as e:
+            tk.messagebox.showerror(  # type: ignore
+                "Error",
+                f"An error occurred: {str(e)}"
+            )
 
 
 class SizeButton(tk.Button):
@@ -35,14 +41,20 @@ class SizeButton(tk.Button):
         self.canvas = canvas
 
     def choose_size(self):
-        size = tk.simpledialog.askinteger(  # type: ignore
-            "Brush Size",
-            "Enter brush size:",
-            initialvalue=self.canvas.brush_size
-        )
-        if size is not None:
-            self.canvas.brush_size = size
-            self.canvas.update_brush_size_label()
+        try:
+            size = tk.simpledialog.askinteger(  # type: ignore
+                "Brush Size",
+                "Enter brush size:",
+                initialvalue=self.canvas.brush_size
+            )
+            if size is not None:
+                self.canvas.brush_size = size
+                self.canvas.update_brush_size_label()
+        except Exception as e:
+            tk.messagebox.showerror(  # type: ignore
+                "Error",
+                f"An error occurred: {str(e)}"
+            )
 
 
 class SprayButton(tk.Button):
@@ -61,14 +73,20 @@ class SprayButton(tk.Button):
         self.configure(bg=self.unselected_color)
 
     def toggle_brush_type(self):
-        self.current_brush_index = (
-            self.current_brush_index + 1
-        ) % len(self.brush_types)
-        brush_type = self.brush_types[self.current_brush_index]
+        try:
+            self.current_brush_index = (
+                self.current_brush_index + 1
+            ) % len(self.brush_types)
+            brush_type = self.brush_types[self.current_brush_index]
 
-        if brush_type == PencilBrush:
-            self.canvas.toggle_brush_mode()
-            self.configure(bg=self.unselected_color)
-        elif brush_type == SprayBrush:
-            self.canvas.toggle_spray_mode()
-            self.configure(bg=self.selected_color)
+            if brush_type == PencilBrush:
+                self.canvas.toggle_brush_mode()
+                self.configure(bg=self.unselected_color)
+            elif brush_type == SprayBrush:
+                self.canvas.toggle_spray_mode()
+                self.configure(bg=self.selected_color)
+        except Exception as e:
+            tk.messagebox.showerror(  # type: ignore
+                "Error",
+                f"An error occurred: {str(e)}"
+            )
