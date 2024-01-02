@@ -38,9 +38,9 @@ jobs:
         pythonLocation: 'C:\hostedtoolcache\windows\Python\3.10.11\x64'
   
   
-    - name: Test with pytest and coverage
+    - name: Test with pytest
       run: |
-        coverage run -m pytest
+        python -m pytest --verbose
 
   coverage:
     runs-on: ubuntu-latest
