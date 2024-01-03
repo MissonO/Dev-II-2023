@@ -28,6 +28,8 @@ class EraserButton(tk.Button):
                 "Error",
                 f"An error occurred: {str(e)}"
             )
+            self.canvas.eraser_mode = False
+            self.configure(bg=self.unselected_color)
 
 
 class SizeButton(tk.Button):
