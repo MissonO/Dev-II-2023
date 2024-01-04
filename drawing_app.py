@@ -1,7 +1,7 @@
 import tkinter as tk
 from canvas import Canvas
 from buttons import EraserButton, SprayButton, SizeButton, SaveButton
-from buttons import colorButton
+from buttons import ColorButton
 
 
 class DrawingApp:
@@ -36,7 +36,7 @@ class DrawingApp:
 
         brush_size_label.pack(side=tk.LEFT)
 
-        color_button = colorButton(root, self.canvas)
+        color_button = ColorButton(root, self.canvas)
         color_button.pack(side=tk.LEFT)
         self.buttons.append(color_button)
 
@@ -50,5 +50,5 @@ class DrawingApp:
     def create_brush_size_label(self):
         return tk.Label(
             self.root,
-            text=f"Brush Size: {self.canvas.brush_size}"
+            text=f"Taille du pinceau: {self.canvas.brush_size}"
         )

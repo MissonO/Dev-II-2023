@@ -30,8 +30,8 @@ class EraserButton(Button):
         super().__init__(
             master,
             canvas,
-            "Gomme",
-            self.toggle_eraser_mode,
+            text="Gomme",
+            command=self.toggle_eraser_mode,
             **kwargs
         )
 
@@ -59,8 +59,8 @@ class SizeButton(Button):
         super().__init__(
             master,
             canvas,
-            "Taille",
-            self.choose_size,
+            text="Taille",
+            command=self.choose_size,
             **kwargs
         )
 
@@ -87,8 +87,8 @@ class SprayButton(Button):
         super().__init__(
             master,
             canvas,
-            "Toggle Brush",
-            self.toggle_brush_type,
+            text="Toggle Brush",
+            command=self.toggle_brush_type,
             **kwargs
         )
         self.brush_types = [PencilBrush, SprayBrush]
@@ -120,8 +120,8 @@ class SaveButton(Button):
         super().__init__(
             master,
             canvas,
-            "Sauvegarder",
-            self.save_image,
+            text="Sauvegarder",
+            command=self.save_image,
             **kwargs
         )
 
@@ -143,13 +143,13 @@ class SaveButton(Button):
         image.save(file_path, "JPEG")
 
 
-class colorButton(Button):
+class ColorButton(Button):
     def __init__(self, master, canvas, **kwargs):
         super().__init__(
             master,
             canvas,
-            "Couleur",
-            self.choose_color,
+            text="Couleur",
+            command=self.choose_color,
             **kwargs
         )
 

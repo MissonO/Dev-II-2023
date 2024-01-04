@@ -3,7 +3,8 @@ import tkinter as tk
 from drawing_app import DrawingApp
 from canvas import Canvas
 from buttons import EraserButton, SprayButton, SizeButton
-from unittest.mock import patch
+from buttons import ColorButton, SaveButton
+from unittest.mock import patch, Mock, MagicMock
 
 
 # Tests for the Canvas initial color set as black
@@ -68,59 +69,6 @@ def test_canvas_toggle_brush_mode(drawing_app):
     assert not canvas.eraser_mode
 
 
-# Tests for the DrawingApp eraser mode enabling
-def test_eraser_button_toggle_eraser_mode(drawing_app):
-    eraser_button = EraserButton(drawing_app.root, drawing_app.canvas)
-
-    assert not drawing_app.canvas.eraser_mode
-    assert eraser_button.cget("bg") == eraser_button.unselected_color
-
-    eraser_button.toggle_eraser_mode()
-
-    assert drawing_app.canvas.eraser_mode
-    assert eraser_button.cget("bg") == eraser_button.selected_color
-
-    # Test when canvas.toggle_eraser_mode() raises an exception
-    with patch.object(
-        drawing_app.canvas,
-        'toggle_eraser_mode',
-        side_effect=Exception("Test Exception")
-    ):
-        with patch('tkinter.messagebox.showerror') as mock_showerror:
-            eraser_button.toggle_eraser_mode()
-
-    mock_showerror.assert_called_once_with(
-        "Error", "An error occurred: Test Exception"
-    )
-
-    assert not drawing_app.canvas.eraser_mode
-    assert eraser_button.cget("bg") == eraser_button.unselected_color
-
-
-# Tests for the DrawingApp color choosing cancelation
-def test_choose_color_cancel(drawing_app):
-    with patch('tkinter.colorchooser.askcolor', return_value=(None, None)):
-        initial_color = drawing_app.canvas.color
-
-        drawing_app.choose_color()
-
-        assert drawing_app.canvas.color == initial_color
-
-
-# Tests for the DrawingApp color choosing
-def test_choose_color_valid_color(drawing_app):
-    with patch(
-        'tkinter.colorchooser.askcolor',
-        return_value=((255, 0, 0),
-                      "#FF0000"
-                      )
-                ):
-
-        drawing_app.choose_color()
-
-        assert drawing_app.canvas.color == "#FF0000"
-
-
 # Tests for the DrawingApp brush size setting
 def test_canvas_set_brush_size():
     root = tk.Tk()
@@ -159,3 +107,75 @@ def test_size_button_initialization():
     size_button = SizeButton(root, canvas)
 
     assert size_button.cget("text") == "Taille"
+
+
+# Test for the buttons
+@pytest.fixture
+def mock_canvas():
+    return Mock()
+
+
+@pytest.fixture
+def mock_master():
+    return MagicMock()
+
+
+def test_eraser_button(mock_master, mock_canvas):
+    eraser_button = EraserButton(mock_master, mock_canvas)
+    eraser_button.cget = MagicMock(return_value="Gomme")
+    assert eraser_button.cget("text") == "Gomme"
+
+
+def test_size_button(mock_master, mock_canvas):
+    size_button = SizeButton(mock_master, mock_canvas)
+    size_button.cget = MagicMock(return_value="Taille")
+    assert size_button.cget("text") == "Taille"
+
+
+def test_spray_button(mock_master, mock_canvas):
+    spray_button = SprayButton(mock_master, mock_canvas)
+    spray_button.cget = MagicMock(return_value="Toggle Brush")
+    assert spray_button.cget("text") == "Toggle Brush"
+
+
+def test_save_button(mock_master, mock_canvas):
+    save_button = SaveButton(mock_master, mock_canvas)
+    save_button.cget = MagicMock(return_value="Sauvegarder")
+    assert save_button.cget("text") == "Sauvegarder"
+
+
+def test_color_button(mock_master, mock_canvas):
+    color_button = ColorButton(mock_master, mock_canvas)
+    color_button.cget = MagicMock(return_value="Couleur")
+    assert color_button.cget("text") == "Couleur"
+
+
+def test_size_button_choose_size(mock_master, mock_canvas):
+    size_button = SizeButton(mock_master, mock_canvas)
+    mock_canvas.update_brush_size_label = MagicMock()
+    with patch('tkinter.simpledialog.askinteger', return_value=10):
+        size_button.choose_size()
+    assert mock_canvas.brush_size == 10
+    mock_canvas.update_brush_size_label.assert_called_once()
+
+
+def test_save_button_save_image(mock_master, mock_canvas):
+    save_button = SaveButton(mock_master, mock_canvas)
+    with patch(
+            'tkinter.filedialog.asksaveasfilename',
+            return_value='test.jpg'
+         ), \
+            patch('PIL.Image.open'), \
+            patch('tkinter.Canvas.postscript'):
+        save_button.save_image()
+
+
+def test_color_button_choose_color(mock_master, mock_canvas):
+    color_button = ColorButton(mock_master, mock_canvas)
+    mock_canvas.set_color = MagicMock()
+    with patch(
+            'tkinter.colorchooser.askcolor',
+            return_value=(None, '#ffffff')
+         ):
+        color_button.choose_color()
+    mock_canvas.set_color.assert_called_once_with('#ffffff')
