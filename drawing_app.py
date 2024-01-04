@@ -1,7 +1,7 @@
 import tkinter as tk
-from tkinter import colorchooser
 from canvas import Canvas
-from buttons import EraserButton, SizeButton, SprayButton
+from buttons import EraserButton, SprayButton, SizeButton, SaveButton
+from buttons import colorButton
 
 
 class DrawingApp:
@@ -9,7 +9,7 @@ class DrawingApp:
         self.root = root
         self.root.title("PyPaint")
 
-        # Créationet affichage du canvas
+        # Création et affichage du canvas
         self.canvas = Canvas(
             root,
             width=800,
@@ -20,31 +20,32 @@ class DrawingApp:
         brush_size_label = self.create_brush_size_label()
         self.canvas.set_brush_size_label(brush_size_label)
 
-        # Bouton pour choisir la couleur
-        color_button = tk.Button(
-            root, text="Couleur",
-            command=self.choose_color
-        )
-        color_button.pack(side=tk.RIGHT)
+        self.buttons = []
 
         eraser_button = EraserButton(root, self.canvas)
         eraser_button.pack(side=tk.LEFT)
+        self.buttons.append(eraser_button)
+
         spray_button = SprayButton(root, self.canvas)
         spray_button.pack(side=tk.LEFT)
+        self.buttons.append(spray_button)
+
         size_button = SizeButton(root, self.canvas)
         size_button.pack(side=tk.LEFT)
+        self.buttons.append(size_button)
+
         brush_size_label.pack(side=tk.LEFT)
 
-    def choose_color(self):
-        try:
-            color = colorchooser.askcolor()[1]
-            if color is not None:
-                self.canvas.set_color(color)
-        except Exception as e:
-            tk.messagebox.showerror(  # type: ignore
-                "Error",
-                f"An error occurred: {str(e)}"
-            )
+        color_button = colorButton(root, self.canvas)
+        color_button.pack(side=tk.LEFT)
+        self.buttons.append(color_button)
+
+        save_button = SaveButton(root, self.canvas)
+        save_button.pack(side=tk.RIGHT)
+        self.buttons.append(save_button)
+
+        for button in self.buttons:
+            button.all_buttons = self.buttons
 
     def create_brush_size_label(self):
         return tk.Label(

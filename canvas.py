@@ -33,7 +33,7 @@ class Canvas(tk.Canvas):
             ) and not self.eraser_mode:
                 self.current_brush = SprayBrush(self, size=self.brush_size)
 
-            self.current_brush._draw(x, y)
+            self.current_brush.draw(x, y)
 
         except Exception as e:
             tk.messagebox.showerror(  # type: ignore
@@ -64,4 +64,6 @@ class Canvas(tk.Canvas):
 
     def update_brush_size_label(self):
         if self.brush_size_label:
-            self.brush_size_label.config(text=f"Brush Size: {self.brush_size}")
+            self.brush_size_label.config(
+                text=f"Taille du pinceau: {self.brush_size}"
+            )
