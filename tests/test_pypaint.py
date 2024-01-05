@@ -97,7 +97,7 @@ def test_spray_button_initialization():
     canvas = Canvas(root)
     spray_button = SprayButton(root, canvas)
 
-    assert spray_button.cget("text") == "Toggle Brush"
+    assert spray_button.cget("text") == "Spray"
     assert spray_button.cget("bg") == spray_button.unselected_color
 
 
