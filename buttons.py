@@ -67,8 +67,8 @@ class SizeButton(Button):
     def choose_size(self):
         try:
             size = simpledialog.askinteger(
-                "Brush Size",
-                "Enter brush size:",
+                "Taille du pinceau",
+                "Choisissez la taille du pinceau:",
                 initialvalue=self.canvas.brush_size
             )
             if size is not None:
@@ -87,7 +87,7 @@ class SprayButton(Button):
         super().__init__(
             master,
             canvas,
-            text="Toggle Brush",
+            text="Spray",
             command=self.toggle_brush_type,
             **kwargs
         )
