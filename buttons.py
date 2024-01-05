@@ -14,10 +14,11 @@ class Button(tk.Button):
             **kwargs
         )
         self.canvas = canvas
-        self.selected_color = "lightgrey"
-        self.unselected_color = "SystemButtonFace"
+        self.selected_color = "lightgrey"  # Couleur sélectionnée
+        self.unselected_color = "SystemButtonFace"  # Couleur non sélectionnée
         self.configure(bg=self.unselected_color)
 
+    # Reset les autres boutons sur la couleur non sélectionnée
     def reset_other_buttons(self):
         for button in self.all_buttons:  # type: ignore
             if button is not self:
@@ -35,6 +36,7 @@ class EraserButton(Button):
             **kwargs
         )
 
+    # Active la gomme
     def toggle_eraser_mode(self):
         try:
             self.canvas.toggle_eraser_mode()
@@ -64,6 +66,7 @@ class SizeButton(Button):
             **kwargs
         )
 
+    # Choix de la taille du pinceau
     def choose_size(self):
         try:
             size = simpledialog.askinteger(
@@ -94,6 +97,7 @@ class SprayButton(Button):
         self.brush_types = [PencilBrush, SprayBrush]
         self.current_brush_index = 0
 
+    # Active le spray
     def toggle_brush_type(self):
         try:
             self.reset_other_buttons()
@@ -115,6 +119,7 @@ class SprayButton(Button):
             )
 
 
+# Classe bouton pour la sauvegarde héritant de la classe Button
 class SaveButton(Button):
     def __init__(self, master, canvas, **kwargs):
         super().__init__(
@@ -125,6 +130,7 @@ class SaveButton(Button):
             **kwargs
         )
 
+    # Sauvegarde l'image
     def save_image(self):
         file_path = filedialog.asksaveasfilename(
             defaultextension=".jpg",
@@ -143,6 +149,7 @@ class SaveButton(Button):
         image.save(file_path, "JPEG")
 
 
+# Classe bouton pour la couleur héritant de la classe Button
 class ColorButton(Button):
     def __init__(self, master, canvas, **kwargs):
         super().__init__(
@@ -153,6 +160,7 @@ class ColorButton(Button):
             **kwargs
         )
 
+    # Choix de la couleur
     def choose_color(self):
         try:
             color = colorchooser.askcolor()[1]

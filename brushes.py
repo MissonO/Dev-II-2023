@@ -8,12 +8,15 @@ class Brush:
         self.color = color
         self.size = size
 
+    # Fonction de dessin
     def draw(self, x, y):
         raise NotImplementedError()
 
+    # Fonction de choix de couleur
     def set_color(self, color):
         self.color = color
 
+    # Fonction de choix de taille
     def set_size(self, size):
         self.size = size
 
