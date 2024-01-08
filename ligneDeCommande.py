@@ -38,6 +38,28 @@ def view_saved_passwords():
         print("Aucun mot de passe enregistré.")
 
 
+def delete_saved_password():
+    try:
+        with open("passwords.txt", "r") as file:
+            passwords = file.read()
+            if passwords:
+                print("Mots de passe enregistrés :")
+                print(passwords)
+            else:
+                print("Aucun mot de passe enregistré.")
+    except FileNotFoundError:
+        print("Aucun mot de passe enregistré.")
+        return
+
+    where = input("Quel mot de passe voulez-vous supprimer ?")
+    if where in passwords:
+        passwords = passwords.replace(where, "")
+        with open("passwords.txt", "w") as file:
+            file.write(passwords)
+    else:
+        print("Ce mot de passe n'existe pas.")
+
+
 # Fonction principale d'interaction avec l'utilisateur
 def main():
     print("Générateur de mots de passe aléatoires")
@@ -68,6 +90,11 @@ def main():
     ).lower()
     if view_saved_option == 'oui':
         view_saved_passwords()
+    view_saved_option = input(
+        "Voulez-vous supprimer un mot de passe ? (oui/non) "
+    ).lower()
+    if view_saved_option == 'oui':
+        delete_saved_password()
 
 
 if __name__ == "__main__":
