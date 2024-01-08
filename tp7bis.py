@@ -24,10 +24,10 @@ def main():
 
     print(float(f1))  # Outputs: 0.75
 
-    print(f1.is_zero)  # Outputs: False
-    print(f1.is_integer)  # Outputs: False
-    print(f1.is_proper)  # Outputs: True
-    print(f1.is_unit)  # Outputs: False
+    print(f1.is_zero())  # Outputs: False
+    print(f1.is_integer())  # Outputs: False
+    print(f1.is_proper())  # Outputs: True
+    print(f1.is_unit())  # Outputs: False
     print(f1.is_adjacent_to(f2))  # Outputs: False
 
 
