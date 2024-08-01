@@ -75,7 +75,8 @@ def delete_saved_password():
 # Fonction principale d'interaction avec l'utilisateur
 def main():
     parser = argparse.ArgumentParser(
-        description="Générateur de mots de passe aléatoires")
+        description="""Générateur de mots de passe aléatoires
+            et stockage de mots de passe.""")
     subparsers = parser.add_subparsers(dest="command")
 
     # Sous-commande pour générer un mot de passe
