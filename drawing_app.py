@@ -1,19 +1,20 @@
 import tkinter as tk
 from canvas import Canvas
-from buttons import EraserButton, SprayButton, SizeButton, SaveButton
-from buttons import ColorButton
+from buttons import EraserButton, SprayButton, SizeButton
+from buttons import SaveButton, ColorButton
 
 
 class DrawingApp:
-    def __init__(self, root):
+    def __init__(self, root, background="white"):
         self.root = root
         self.root.title("PyPaint")
 
-        # Création et affichage du canvas
+        # Création et affichage du canvas avec la couleur de fond spécifiée
         self.canvas = Canvas(
             root,
             width=800,
             height=600,
+            bg=background  # Utilisation de la couleur de fond
         )
         self.canvas.pack(expand=tk.YES, fill=tk.BOTH)
 

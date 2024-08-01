@@ -5,7 +5,7 @@ from brushes import PencilBrush, SprayBrush, EraserBrush
 # Création de la classe Canvas, qui hérite de tk.Canvas
 class Canvas(tk.Canvas):
     def __init__(self, master, **kwargs):
-        super().__init__(master, bg="white", **kwargs)  # Création du canvas
+        super().__init__(master, **kwargs)  # Création du canvas
         self.bind("<B1-Motion>", self.draw)  # Dessine lors du clic gauche
         self.color = "black"  # Couleur du pinceau
         self.eraser_mode = False  # Mode gomme
