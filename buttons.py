@@ -7,6 +7,13 @@ from brushes import PencilBrush, SprayBrush
 # Classe bouton générique héritant de tk.Button
 class Button(tk.Button):
     def __init__(self, master, canvas, text, command, **kwargs):
+        """
+        Create a generic button
+        PRE: master is a tkinter widget, canvas is a Canvas object,
+             text is a string, command is a function to execute
+        POST: a button is created with the given text and command
+              and the default color is set to unselected_color
+        """
         super().__init__(
             master,
             text=text,
@@ -20,6 +27,12 @@ class Button(tk.Button):
 
     # Reset les autres boutons sur la couleur non sélectionnée
     def reset_other_buttons(self):
+        """
+        Reset all buttons to unselected color except self
+
+        PRE: self is a list of buttons
+        POST: all buttons are reset to unselected color except self
+        """
         for button in self.all_buttons:  # type: ignore
             if button is not self:
                 button.configure(bg=button.unselected_color)
@@ -28,6 +41,12 @@ class Button(tk.Button):
 # Classe bouton pour la gomme héritant de la classe Button
 class EraserButton(Button):
     def __init__(self, master, canvas, **kwargs):
+        """
+        Create an eraser button
+        PRE: master is a tkinter widget, canvas is a Canvas object
+        POST: an eraser button is created with the default text "Gomme"
+             and the toggle_eraser_mode command attributed
+        """
         super().__init__(
             master,
             canvas,
@@ -38,6 +57,13 @@ class EraserButton(Button):
 
     # Active la gomme
     def toggle_eraser_mode(self):
+        """
+        Toggle eraser mode on and off
+
+        PRE: self.canvas is a button with a configure method
+        POST: eraser mode is toggled on and off
+        RAISE: tk.messagebox.showerror if an error occurs
+        """
         try:
             self.canvas.toggle_eraser_mode()
             self.reset_other_buttons()
@@ -58,6 +84,12 @@ class EraserButton(Button):
 # Classe bouton pour la taille du pinceau héritant de la classe Button
 class SizeButton(Button):
     def __init__(self, master, canvas, **kwargs):
+        """
+        Create a size button
+        PRE: master is a tkinter widget, canvas is a Canvas object
+        POST: a size button is created with the default text "Taille"
+            and the choose_size command attributed
+        """
         super().__init__(
             master,
             canvas,
@@ -68,6 +100,12 @@ class SizeButton(Button):
 
     # Choix de la taille du pinceau
     def choose_size(self):
+        """
+        Choose the brush size
+        PRE: self is a button with canvas
+        POST: the brush size is chosen
+        RAISE: tk.messagebox.showerror if an error occurs
+        """
         try:
             size = simpledialog.askinteger(
                 "Taille du pinceau",
@@ -87,6 +125,12 @@ class SizeButton(Button):
 # Classe bouton pour le spray héritant de la classe Button
 class SprayButton(Button):
     def __init__(self, master, canvas, **kwargs):
+        """
+        Create a spray button
+        PRE: master is a tkinter widget, canvas is a Canvas object
+        POST: a spray button is created with the default text "Spray"
+            and the toggle_brush_type command attributed
+        """
         super().__init__(
             master,
             canvas,
@@ -99,6 +143,12 @@ class SprayButton(Button):
 
     # Active le spray
     def toggle_brush_type(self):
+        """
+        Toggle between brush types
+        PRE: self is a button with brush_types and current_brush_index
+        POST: the choosen brush type is toggled
+        RAISE: tk.messagebox.showerror if an error occurs
+        """
         try:
             self.reset_other_buttons()
             self.current_brush_index = (
@@ -121,6 +171,12 @@ class SprayButton(Button):
 
 # Classe bouton pour la sauvegarde héritant de la classe Button
 class SaveButton(Button):
+    """
+    Create a save button
+    PRE: master is a tkinter widget, canvas is a Canvas object
+    POST: a save button is created with the default text "Sauvegarder"
+        and the save_image command attributed
+    """
     def __init__(self, master, canvas, **kwargs):
         super().__init__(
             master,
@@ -132,6 +188,11 @@ class SaveButton(Button):
 
     # Sauvegarde l'image
     def save_image(self):
+        """
+        Save the image
+        PRE: self is a button with canvas
+        POST: the image is saved in the chosen format
+        """
         file_path = filedialog.asksaveasfilename(
             defaultextension=".jpg",
             filetypes=[
@@ -152,6 +213,12 @@ class SaveButton(Button):
 # Classe bouton pour la couleur héritant de la classe Button
 class ColorButton(Button):
     def __init__(self, master, canvas, **kwargs):
+        """
+        Create a color button
+        PRE: master is a tkinter widget, canvas is a Canvas object
+        POST: a color button is created with the default text "Couleur"
+            and the choose_color command attributed
+        """
         super().__init__(
             master,
             canvas,
@@ -162,6 +229,12 @@ class ColorButton(Button):
 
     # Choix de la couleur
     def choose_color(self):
+        """
+        Choose the color
+        PRE: self is a button with canvas
+        POST: the color is chosen
+        RAISE: tk.messagebox.showerror if an error occurs
+        """
         try:
             color = colorchooser.askcolor()[1]
             if color is not None:
