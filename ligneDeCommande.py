@@ -1,6 +1,7 @@
 import random
 import string
 import argparse
+import os
 
 
 # Fonction qui génère un mot de passe aléatoire
@@ -72,6 +73,12 @@ def delete_saved_password():
         print(f"Mot de passe '{where}' supprimé.")
 
 
+# Fonction qui affiche l'emplacement du fichier de mots de passe
+def show_password_location():
+    location = os.path.abspath("passwords.txt")
+    print(f"Les mots de passe sont stockés ici : {location}")
+
+
 # Fonction principale d'interaction avec l'utilisateur
 def main():
     parser = argparse.ArgumentParser(
@@ -109,6 +116,9 @@ def main():
     subparsers.add_parser(
         "delete", help="Supprimer un mot de passe enregistré")
 
+    subparsers.add_parser(
+        "location", help="Afficher l'emplacement des mots de passe")
+
     args = parser.parse_args()
 
     if args.command == "generate":
@@ -127,6 +137,9 @@ def main():
 
     elif args.command == "delete":
         delete_saved_password()
+
+    elif args.command == "location":
+        show_password_location()
 
     else:
         parser.print_help()
