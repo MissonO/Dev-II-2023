@@ -11,7 +11,7 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(
         description="Application de dessin")
-    # bg or background argument, optional 
+    # bg or background argument, optional
     # with an optional specification(nargs), default is white
     parser.add_argument('-bg', '--background', nargs='?', type=str,
                         default="white",
